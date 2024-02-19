@@ -4,16 +4,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 
 class HomeScreenDistributor extends StatefulWidget {
-  // final double screenHeight;
-  // final double screenWidth;
-  const HomeScreenDistributor({Key? key}) : super(key: key);
+  final double screenHeight;
+  final double screenWidth;
+  const HomeScreenDistributor({Key? key, required this.screenHeight, required this.screenWidth}) : super(key: key);
 
   @override
   State<HomeScreenDistributor> createState() => _HomeScreenDistributor();
 }
 
 class _HomeScreenDistributor extends State<HomeScreenDistributor> {
-
   late Position _currentPosition;
 
   @override
@@ -24,26 +23,31 @@ class _HomeScreenDistributor extends State<HomeScreenDistributor> {
 
   Future<void> _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+      Position? position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 5),
+      );
       setState(() {
-        _currentPosition = position;
+        _currentPosition = position!;
       });
     } catch (e) {
       print("Error: $e");
+      // Handle the case when location cannot be obtained
+      setState(() {
+        // _currentPosition = Position(latitude: 0.0, longitude: 0.0);
+      });
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: screenHeight * 0.019157088,),
+          SizedBox(height: widget.screenHeight * 0.025542784,),
           Container(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(widget.screenWidth * 0.038167939),
             alignment: Alignment.topLeft,
             child: CachedNetworkImage(
               imageUrl: 'Image',
@@ -53,41 +57,65 @@ class _HomeScreenDistributor extends State<HomeScreenDistributor> {
               ),
               errorWidget: (context, url, error) => CircleAvatar(
                 radius: 50.0,
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.lightGreen,
               ),
             ),
           ),
 
-          // Container(
-          //   padding: EdgeInsets.all(16.0),
-          //   alignment: Alignment.topLeft,
-          //   child: Text(
-          //     'Current Location: ${_currentPosition?.latitude ?? 0.0}, ${_currentPosition?.longitude ?? 0.0}',
-          //     style: TextStyle(fontSize: 16.0),
-          //   ),
-          // ),
+          Container(
+            padding: EdgeInsets.all(16.0),
+            alignment: Alignment.topLeft,
+            child: Text(
+              'Current Location: ${_currentPosition?.latitude ?? 0.0}, ${_currentPosition?.longitude ?? 0.0}',
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ),
 
           Expanded(
             child: ListView(
-
+              physics: BouncingScrollPhysics(),
               children: [
                 MyCardView(title: "XYZ", imageUrl: "https://www.google.com/search?q=silicon+website&tbm=isch&chips=q:silicon+website,online_chips:silicon+institute:IwEpddL_wYo%3D&prmd=invsmbtz&rlz=1C1CHBD_enIN990IN990&hl=en&sa=X&ved=2ahUKEwi50qGwj7WEAxVGS2wGHVqZD7kQ4lYoAHoECAEQNA&biw=1519&bih=730#imgrc=ZrbnLf4UVCMqrM", distance: 4.5, quantity: 7.9,),
                 MyCardView(title: "XYZ", imageUrl: "https://www.google.com/search?q=silicon+website&tbm=isch&chips=q:silicon+website,online_chips:silicon+institute:IwEpddL_wYo%3D&prmd=invsmbtz&rlz=1C1CHBD_enIN990IN990&hl=en&sa=X&ved=2ahUKEwi50qGwj7WEAxVGS2wGHVqZD7kQ4lYoAHoECAEQNA&biw=1519&bih=730#imgrc=ZrbnLf4UVCMqrM", distance: 4.5, quantity: 7.9,),
                 MyCardView(title: "XYZ", imageUrl: "https://www.google.com/search?q=silicon+website&tbm=isch&chips=q:silicon+website,online_chips:silicon+institute:IwEpddL_wYo%3D&prmd=invsmbtz&rlz=1C1CHBD_enIN990IN990&hl=en&sa=X&ved=2ahUKEwi50qGwj7WEAxVGS2wGHVqZD7kQ4lYoAHoECAEQNA&biw=1519&bih=730#imgrc=ZrbnLf4UVCMqrM", distance: 4.5, quantity: 7.9,),
-                // Add more card views as needed
+                MyCardView(title: "XYZ", imageUrl: "https://www.google.com/search?q=silicon+website&tbm=isch&chips=q:silicon+website,online_chips:silicon+institute:IwEpddL_wYo%3D&prmd=invsmbtz&rlz=1C1CHBD_enIN990IN990&hl=en&sa=X&ved=2ahUKEwi50qGwj7WEAxVGS2wGHVqZD7kQ4lYoAHoECAEQNA&biw=1519&bih=730#imgrc=ZrbnLf4UVCMqrM", distance: 4.5, quantity: 7.9,),
               ],
             ),
           ),
         ],
       ),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.lightGreenAccent,
+          selectedItemColor: Colors.black54,
+          unselectedItemColor: Colors.white,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home,),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
+
+
 class MyCardView extends StatelessWidget {
-  final String title; // Assuming title is the organization name
-  final String imageUrl; // Image URL from API
-  final double distance; // Distance from distributor
-  final double quantity; // Quantity of food
+  final String title;
+  final String imageUrl;
+  final double distance;
+  final double quantity;
 
   MyCardView({
     required this.title,
@@ -102,7 +130,8 @@ class MyCardView extends StatelessWidget {
     double he = MediaQuery.of(context).size.height;
     double wi = MediaQuery.of(context).size.width;
     return Card(
-      margin: const EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(20.0),
+      elevation: 5,
       child: ListTile(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,8 +139,8 @@ class MyCardView extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: 80.0, // Adjust as needed
-                  height: 80.0, // Adjust as needed
+                  width: wi * 0.127226463,
+                  height: he * 0.06385696,
                   child: Image.network(
                     imageUrl,
                     fit: BoxFit.cover,
@@ -125,12 +154,12 @@ class MyCardView extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        fontSize: he * 0.022988506,
                       ),
                     ),
                     Text(
                       'Distance: $distance km',
-                      style: TextStyle(fontSize: 14.0),
+                      style: TextStyle(fontSize: he * 0.019157088),
                     ),
                   ],
                 ),
@@ -145,11 +174,13 @@ class MyCardView extends StatelessWidget {
                   style: TextStyle(fontSize: 16.0),
                 ),
                 ElevatedButton(
-                  style: ButtonStyle(),
                   onPressed: () {
                     // Handle Details button click
                   },
-                  child: Text('Details'),
+                  child: Text('Details', style: TextStyle(color: Colors.black),),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightGreenAccent
+                  ),
                 ),
               ],
             ),
@@ -160,6 +191,3 @@ class MyCardView extends StatelessWidget {
     );
   }
 }
-
-
-

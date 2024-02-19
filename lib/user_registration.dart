@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:meals_bridge_frontend/otp_verification_screenn.dart';
 
 class UserRegistration extends StatefulWidget {
   const UserRegistration({super.key});
@@ -218,8 +219,25 @@ class _UserRegistrationState extends State<UserRegistration> {
                     },
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle CONTINUE button press
-                        // You may want to validate the phone number before proceeding
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation, secondaryAnimation) => OtpVerification(phoneNumber: _phoneNumberController.text), // Assuming UserRegistration is the registration screen
+                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                              const begin = Offset(0.0, 1.0);
+                              const end = Offset.zero;
+                              const curve = Curves.easeInOut;
+
+                              var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                              var offsetAnimation = animation.drive(tween);
+
+                              return SlideTransition(
+                                position: offsetAnimation,
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
