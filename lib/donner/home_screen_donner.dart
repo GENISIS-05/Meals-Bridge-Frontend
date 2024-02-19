@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomeScreenDonner extends StatefulWidget {
   const HomeScreenDonner({Key? key}) : super(key: key);
@@ -8,11 +12,54 @@ class HomeScreenDonner extends StatefulWidget {
 }
 
 class _HomeScreenDonnerState extends State<HomeScreenDonner> {
+
+  late GoogleMapController googleMapController;
+
+  static const CameraPosition initialCameraPosition = CameraPosition(target: LatLng(37.42796133580664, -122.085749655962), zoom: 14);
+
+  // Set<Marker> markers = {};
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.black,
       body: Stack(
         children: [
+
+          // GoogleMap(
+          //   initialCameraPosition: initialCameraPosition,
+          //   // markers: markers,
+          //   zoomControlsEnabled: false,
+          //   mapType: MapType.normal,
+          //   onMapCreated: (GoogleMapController controller) {
+          //     googleMapController = controller;
+          //   },
+          // ),
+
+          // Circular Avatar at the top left corner
+          Positioned(
+            top: MediaQuery.of(context).size.height*0.05,
+            left: 20,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xFF04FC10),
+                borderRadius: BorderRadius.circular(50),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: CircleAvatar(
+                radius: 25,
+                backgroundImage: AssetImage('assets/profile.jpg'), // Add your image path
+              ),
+            ),
+          ),
+
           // Your main content goes here
 
           // Bottom Navigation Bar
@@ -21,14 +68,14 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
             left: 30,
             right: 30,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Container(
                 decoration: BoxDecoration(
                   color: Color(0xFF04FC10),
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(50),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black12.withOpacity(0.15),
+                      color: Color(0xFF63FF6A).withOpacity(0.6),
                       spreadRadius: 2,
                       blurRadius: 20,
                       offset: Offset(0, 3),
@@ -41,30 +88,36 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.home, color: Colors.white, size: 40,),
-                              onPressed: () {
-                                // Add your home icon functionality here
-                              },
-                            ),
-                            Text('Home', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                icon: Icon(CupertinoIcons.home, color: Colors.white, size: 38,),
+                                onPressed: () {
+                                  // Add your home icon functionality here
+                                },
+                              ),
+                              Text('Home', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                         ),
                         SizedBox(width: MediaQuery.of(context).size.width*0.05,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.archive, color: Colors.white, size: 40,),
-                              onPressed: () {
-                                // Add your archive icon functionality here
-                              },
-                            ),
-                            Text('Archives', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.timelapse, color: Colors.white, size: 40,),
+                                onPressed: () {
+                                  // Add your archive icon functionality here
+                                },
+                              ),
+                              Text('Archives', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -86,13 +139,13 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
                     color: Colors.white,
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.shopping_cart, color: Color(0xFF04FC10), size: 40,),
+                    icon: Icon(CupertinoIcons.cube_box, color: Color(0xFF04FC10), size: 40,),
                     onPressed: () {
                       // Add your order icon functionality here
                     },
                   ),
                 ),
-                Text('Donate', style: TextStyle(color: Colors.white)),
+                Text('Donate', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
           ),
