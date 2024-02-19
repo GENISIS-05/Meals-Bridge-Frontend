@@ -33,6 +33,7 @@ dependencies:
   google_fonts:
   geolocator:
   cached_network_image:
+  intl_phone_field:
 
 
   # The following adds the Cupertino Icons font to your application.

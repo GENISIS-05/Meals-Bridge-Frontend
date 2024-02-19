@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class UserRegistration extends StatefulWidget {
   const UserRegistration({super.key});
@@ -9,7 +11,7 @@ class UserRegistration extends StatefulWidget {
 
 class _UserRegistrationState extends State<UserRegistration> {
   double _animationValue = 1.0; // Variable to control the animation
-
+  late TextEditingController _phoneNumberController= TextEditingController();
   // Future<void> initializeFirebase() async {
   //   await Firebase.initializeApp();
   //   // _firestore = FirebaseFirestore.instance;
@@ -129,62 +131,83 @@ class _UserRegistrationState extends State<UserRegistration> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TweenAnimationBuilder(
-                    duration: const Duration(milliseconds: 750),
-                    curve: Curves.easeInOut,
-                    tween: Tween<double>(begin: 1, end: _animationValue),
-                    builder: (context, value, child) {
-                      return Transform.translate(
-                        offset: Offset(0, value * MediaQuery.of(context).size.height),
-                        child: Opacity(
-                          opacity: 1 - value,
-                          child: child,
-                        ),
-                      );
-                    },
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        // showDialog(
-                        //   context: context,
-                        //   barrierDismissible: false,
-                        //   builder: (BuildContext context) {
-                        //     return WillPopScope(
-                        //       onWillPop: () async => false, // Disable popping with back button
-                        //       child: const Center(
-                        //         child: SpinKitFadingCircle(
-                        //           color: Color(0xFFFCBB04),
-                        //           size: 50.0,
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        // );
-                        // await AuthService().signInWithGoogle(context);
+                  // Remove Google Sign-in Button
+                  // Remove Facebook Sign-in Button
+
+                  // Add PhoneNumberField
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: TweenAnimationBuilder(
+                      // Adjust animation duration as needed
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                      tween: Tween<double>(begin: 1, end: _animationValue),
+                      builder: (context, value, child) {
+                        return Transform.translate(
+                          offset: Offset(0, value * MediaQuery.of(context).size.height),
+                          child: Opacity(
+                            opacity: 1 - value,
+                            child: child,
+                          ),
+                        );
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF04FC10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                      child: FractionallySizedBox(
+                        widthFactor: 0.97,
+                        child: IntlPhoneField(
+                          controller: _phoneNumberController,
+                          dropdownTextStyle: TextStyle(color: Colors.white),
+                          dropdownIcon: Icon(Icons.arrow_drop_down_outlined, color: Color(0xFF04FC10),),
+                          decoration: InputDecoration(
+                            // labelText: 'Phone Number',
+                            hintText: 'Phone Number',
+                            hintStyle: TextStyle(color: Colors.white54),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF04FC10)), // Border color when not focused
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF04FC10)), // Border color when focused
+                            ),
+                            fillColor: Colors.black87, // Background color
+                            filled: true,
+
+                          ),
+                          style: TextStyle(color: Colors.white), // Text color of the input number
+                          cursorColor: Colors.white, // Cursor color
+                          initialCountryCode: 'IN',
+                          pickerDialogStyle: PickerDialogStyle(
+                            listTileDivider: Divider(
+                              color: Colors.white,
+                            ),
+                            backgroundColor: Colors.black54,
+                            countryCodeStyle: TextStyle(color: Colors.white), // Set text color of the country code
+                            countryNameStyle: TextStyle(color: Colors.white),
+                            searchFieldCursorColor: Colors.white,
+                            searchFieldInputDecoration: InputDecoration(
+                              labelText: "Search Country",
+                              labelStyle: TextStyle(color: Colors.white),
+                              iconColor: Colors.white,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white), // Border color when focused
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white), // Border color when not focused
+                              ),
+
+                            ),
+                          ),
+                          onChanged: (phone) {
+                            // Handle phone number changes
+                          },
                         ),
-                        elevation: 8, // Remove default elevation
-                        shadowColor: const Color(0xFF63FF6A),
-                      ),
-                      icon: Image.asset(
-                        'assets/google.png',
-                        height: MediaQuery.of(context).size.height * 0.03,
-                        width: MediaQuery.of(context).size.height * 0.055,
-                      ),
-                      label: Text('Signin with Google'),
+                      )
                     ),
                   ),
-
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-
+                  // Add CONTINUE Button
                   TweenAnimationBuilder(
-                    duration: const Duration(milliseconds: 800),
+                    duration: const Duration(milliseconds: 500),
                     curve: Curves.easeInOut,
                     tween: Tween<double>(begin: 1, end: _animationValue),
-                    builder: (context, value, child) {
+                    builder: (context, value, child) {Color(0xFF04FC10);
                       return Transform.translate(
                         offset: Offset(0, value * MediaQuery.of(context).size.height),
                         child: Opacity(
@@ -193,44 +216,26 @@ class _UserRegistrationState extends State<UserRegistration> {
                         ),
                       );
                     },
-                    child: Center(
-                      child: Text("OR", style: TextStyle(color: Colors.white)),
-                    ),
-                  ),
-
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-
-                  TweenAnimationBuilder(
-                    duration: const Duration(milliseconds: 850),
-                    curve: Curves.easeInOut,
-                    tween: Tween<double>(begin: 1, end: _animationValue),
-                    builder: (context, value, child) {
-                      return Transform.translate(
-                        offset: Offset(0, value * MediaQuery.of(context).size.height),
-                        child: Opacity(
-                          opacity: 1 - value,
-                          child: child,
-                        ),
-                      );
-                    },
-                    child: ElevatedButton.icon(
+                    child: ElevatedButton(
                       onPressed: () {
-                        // Handle Facebook login
+                        // Handle CONTINUE button press
+                        // You may want to validate the phone number before proceeding
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF04FC10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        elevation: 8, // Remove default elevation
+                        backgroundColor: Colors.white,
+                        elevation: 8,
                         shadowColor: const Color(0xFF63FF6A),
                       ),
-                      icon: Image.asset(
-                        'assets/facebook.png',
-                        height: MediaQuery.of(context).size.height * 0.03,
-                        width: MediaQuery.of(context).size.height * 0.03,
+                      child: SizedBox(
+                        width: 0.8 * MediaQuery.of(context).size.width, // Set the width to 0.8 times the screen width
+                        height: 0.065 * MediaQuery.of(context).size.height,
+                        child: Center(
+                          child: Text(
+                            'CONTINUE',
+                            style: TextStyle(color: Color(0xFF04FC10), fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
-                      label: Text('Signin with Facebook'),
                     ),
                   ),
                 ],
