@@ -14,7 +14,8 @@ import 'package:meals_bridge_frontend/donner/home_screen_donner.dart';
 
 class ProgileSetup extends StatefulWidget {
   final String phoneNumber;
-  const ProgileSetup({super.key, required this.phoneNumber,});
+  final String uid;
+  const ProgileSetup({super.key, required this.phoneNumber, required this.uid});
 
   @override
   State<ProgileSetup> createState() => _ProgileSetupState();
