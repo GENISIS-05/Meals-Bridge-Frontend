@@ -288,7 +288,18 @@ class _UserRegistrationState extends State<UserRegistration> {
                     },
                     child: ElevatedButton(
                       onPressed: () {
-                        _sendOtp();
+                        print(_phoneNumberController.text);
+                        if(_phoneNumberController.text != ''){
+                          _sendOtp();
+                        }else{
+                          final snackBar = SnackBar(
+                            content: Text('Phone number field can not be null'),
+                            backgroundColor: Colors.green,
+                            duration: Duration(seconds: 2),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,

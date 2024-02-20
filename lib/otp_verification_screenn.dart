@@ -29,7 +29,7 @@ class _OtpVerificationState extends State<OtpVerification> {
     final response = await http.post(
       Uri.parse(Config.verifyOtpUrl),
       body: jsonEncode({
-        "phone": widget.phoneNumber,
+        "phone": '+91${widget.phoneNumber}',
         "otp": otpController.text,
       }),
       headers: {'Content-Type': 'application/json'},
