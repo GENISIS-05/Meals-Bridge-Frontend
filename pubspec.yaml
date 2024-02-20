@@ -44,6 +44,7 @@ dependencies:
   flutter_google_places:
   awesome_snackbar_content:
   http:
+  flutter_styled_toast:
 
 
   # The following adds the Cupertino Icons font to your application.

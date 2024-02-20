@@ -222,6 +222,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.17"
+  flutter_styled_toast:
+    dependency: "direct main"
+    description:
+      name: flutter_styled_toast
+      sha256: e02c67354fdd8d59671ddd39735ce39dd13d54f8c821d3ab44830c5410e16fba
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.3.0"
   flutter_svg:
     dependency: transitive
     description:

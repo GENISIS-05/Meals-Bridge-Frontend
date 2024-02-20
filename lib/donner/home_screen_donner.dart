@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:meals_bridge_frontend/donner/donate_screen.dart';
 
 class HomeScreenDonner extends StatefulWidget {
   const HomeScreenDonner({Key? key}) : super(key: key);
@@ -141,7 +142,25 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
                   child: IconButton(
                     icon: Icon(CupertinoIcons.cube_box, color: Color(0xFF04FC10), size: 40,),
                     onPressed: () {
-                      // Add your order icon functionality here
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => DonateScreen(), // Assuming UserRegistration is the registration screen
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(0.0, 1.0);
+                            const end = Offset.zero;
+                            const curve = Curves.easeInOut;
+
+                            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                            var offsetAnimation = animation.drive(tween);
+
+                            return SlideTransition(
+                              position: offsetAnimation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
                     },
                   ),
                 ),
