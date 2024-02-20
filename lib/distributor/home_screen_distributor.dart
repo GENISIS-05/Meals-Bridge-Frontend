@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:meals_bridge_frontend/distributor/order%20details.dart';
 
 
 class HomeScreenDistributor extends StatefulWidget {
-  final double screenHeight;
-  final double screenWidth;
-  const HomeScreenDistributor({Key? key, required this.screenHeight, required this.screenWidth}) : super(key: key);
+  const HomeScreenDistributor({Key? key}) : super(key: key);
 
   @override
   State<HomeScreenDistributor> createState() => _HomeScreenDistributor();
@@ -42,44 +41,54 @@ class _HomeScreenDistributor extends State<HomeScreenDistributor> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: widget.screenHeight * 0.025542784,),
-          Container(
-            padding: EdgeInsets.all(widget.screenWidth * 0.038167939),
-            alignment: Alignment.topLeft,
-            child: CachedNetworkImage(
-              imageUrl: 'Image',
-              placeholder: (context, url) => CircleAvatar(
-                radius: 50.0,
-                backgroundColor: Colors.lightGreen,
+          SizedBox(height: screenHeight * 0.025542784,),
+          Row(
+            children:[
+              Container(
+                padding: EdgeInsets.all(screenWidth * 0.038167939),
+                alignment: Alignment.topLeft,
+                child: CachedNetworkImage(
+                  imageUrl: 'Image',
+                  placeholder: (context, url) => CircleAvatar(
+                    radius: screenWidth * 0.089058524,
+                    backgroundColor: Colors.lightGreen,
+                  ),
+                  errorWidget: (context, url, error) => CircleAvatar(
+                    radius: screenWidth * 0.089058524,
+                    backgroundColor: Colors.lightGreen,
+                  ),
+                ),
               ),
-              errorWidget: (context, url, error) => CircleAvatar(
-                radius: 50.0,
-                backgroundColor: Colors.lightGreen,
+              SizedBox(height: screenWidth * 0.025445293),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  '${_currentPosition?.latitude ?? 0.0}, ${_currentPosition?.longitude ?? 0.0}',
+                  style: TextStyle(fontSize: 16.0),
+                ),
               ),
-            ),
+            ]
           ),
-
-          Container(
-            padding: EdgeInsets.all(16.0),
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Current Location: ${_currentPosition?.latitude ?? 0.0}, ${_currentPosition?.longitude ?? 0.0}',
-              style: TextStyle(fontSize: 16.0),
-            ),
-          ),
-
+          Center(child: Text('Active orders in nearby location', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),)),
+          SizedBox(height: screenHeight * 0.006385696,),
           Expanded(
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: [
-                MyCardView(title: "XYZ", imageUrl: "https://www.google.com/search?q=silicon+website&tbm=isch&chips=q:silicon+website,online_chips:silicon+institute:IwEpddL_wYo%3D&prmd=invsmbtz&rlz=1C1CHBD_enIN990IN990&hl=en&sa=X&ved=2ahUKEwi50qGwj7WEAxVGS2wGHVqZD7kQ4lYoAHoECAEQNA&biw=1519&bih=730#imgrc=ZrbnLf4UVCMqrM", distance: 4.5, quantity: 7.9,),
-                MyCardView(title: "XYZ", imageUrl: "https://www.google.com/search?q=silicon+website&tbm=isch&chips=q:silicon+website,online_chips:silicon+institute:IwEpddL_wYo%3D&prmd=invsmbtz&rlz=1C1CHBD_enIN990IN990&hl=en&sa=X&ved=2ahUKEwi50qGwj7WEAxVGS2wGHVqZD7kQ4lYoAHoECAEQNA&biw=1519&bih=730#imgrc=ZrbnLf4UVCMqrM", distance: 4.5, quantity: 7.9,),
-                MyCardView(title: "XYZ", imageUrl: "https://www.google.com/search?q=silicon+website&tbm=isch&chips=q:silicon+website,online_chips:silicon+institute:IwEpddL_wYo%3D&prmd=invsmbtz&rlz=1C1CHBD_enIN990IN990&hl=en&sa=X&ved=2ahUKEwi50qGwj7WEAxVGS2wGHVqZD7kQ4lYoAHoECAEQNA&biw=1519&bih=730#imgrc=ZrbnLf4UVCMqrM", distance: 4.5, quantity: 7.9,),
-                MyCardView(title: "XYZ", imageUrl: "https://www.google.com/search?q=silicon+website&tbm=isch&chips=q:silicon+website,online_chips:silicon+institute:IwEpddL_wYo%3D&prmd=invsmbtz&rlz=1C1CHBD_enIN990IN990&hl=en&sa=X&ved=2ahUKEwi50qGwj7WEAxVGS2wGHVqZD7kQ4lYoAHoECAEQNA&biw=1519&bih=730#imgrc=ZrbnLf4UVCMqrM", distance: 4.5, quantity: 7.9,),
-              ],
+            child: ListView.builder(physics: BouncingScrollPhysics(),
+              itemCount: 4, // Change this to the number of items in your list
+              itemExtent: 180,
+              itemBuilder: (BuildContext context, int index) {
+                return MyCardView(
+                  title: "XYZ",
+                  imageUrl: "https://www.example.com/image.jpg",
+                  distance: 4.5,
+                  quantity: 7.9,
+                );
+              },
             ),
           ),
         ],
@@ -92,7 +101,7 @@ class _HomeScreenDistributor extends State<HomeScreenDistributor> {
           unselectedItemColor: Colors.white,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home,),
+              icon: Icon(Icons.home),
               label: 'Home',
             ),
             BottomNavigationBarItem(
@@ -104,6 +113,18 @@ class _HomeScreenDistributor extends State<HomeScreenDistributor> {
               label: 'Settings',
             ),
           ],
+          // onTap: (index) {
+          //   // Handle navigation when a tab is tapped
+          //   switch (index) {
+          //     case 1:
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => ..),
+          //       );
+          //       break;
+          //   // Add cases for other tabs if needed
+          //   }
+          // },
         ),
       ),
     );
@@ -130,7 +151,7 @@ class MyCardView extends StatelessWidget {
     double he = MediaQuery.of(context).size.height;
     double wi = MediaQuery.of(context).size.width;
     return Card(
-      margin: const EdgeInsets.all(20.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       elevation: 5,
       child: ListTile(
         title: Column(
@@ -139,8 +160,8 @@ class MyCardView extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: wi * 0.127226463,
-                  height: he * 0.06385696,
+                  width: wi * 0.203562341,
+                  height: he * 0.102171137,
                   child: Image.network(
                     imageUrl,
                     fit: BoxFit.cover,
@@ -173,15 +194,29 @@ class MyCardView extends StatelessWidget {
                   'Quantity: $quantity kg',
                   style: TextStyle(fontSize: 16.0),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle Details button click
-                  },
-                  child: Text('Details', style: TextStyle(color: Colors.black),),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightGreenAccent
-                  ),
-                ),
+                TextButton(onPressed: (){
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) => OrderDeatilsDistributor(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(1.0, 0.0);
+                        const end = Offset.zero;
+                        const curve = Curves.easeInOutQuart;
+
+                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                        var offsetAnimation = animation.drive(tween);
+
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+                    child: Text("Details", style: TextStyle(fontSize: he * 0.022988506),))
               ],
             ),
           ],
