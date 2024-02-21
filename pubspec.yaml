@@ -50,6 +50,7 @@ dependencies:
   shared_preferences: 2.2.2
   intl:
   url_launcher:
+  animated_text_kit:
 
 
   # The following adds the Cupertino Icons font to your application.
