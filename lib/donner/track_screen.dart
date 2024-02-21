@@ -31,27 +31,30 @@ class _TrackScreenState extends State<TrackScreen> {
   }
 
   Future<void> receiverDetails(String receiverId) async {
-
-    print(widget.reciveruid);
-
-    // final apiUrl = 'https://nirogh.com/bapi/phlebotomist/$phlebotomistId';
-    // print('${Config.fetchUserUrl}/$receiverId');
-
     try {
       final response = await http.get(Uri.parse('${Config.fetchUserUrl}/$receiverId'));
+      print(response.body);
 
       if (response.statusCode == 200) {
-        final Map<String, String> responseData = json.decode(response.body)['data'];
+        final List<dynamic> responseDataList = json.decode(response.body);
 
-        // Assign values to variables
-        setState(() {
-          receiverName = responseData['name'] ?? "";
-          receiverPhone = responseData['phone'] ?? "";
-          isLoading = false; // Set isLoading to false after successful fetch
-        });
+        if (responseDataList.isNotEmpty) {
+          final Map<String, dynamic> responseData = responseDataList.first;
+
+          // Assign values to variables
+          setState(() {
+            receiverName = responseData['name'] ?? "";
+            receiverPhone = responseData['phone'] ?? "";
+            isLoading = false; // Set isLoading to false after successful fetch
+          });
+        } else {
+          // Handle the case where the response is empty or not in the expected format
+          print('Invalid response format');
+          isLoading = false; // Set isLoading to false in case of an error
+        }
       } else {
         // Handle error
-        print('Failed to fetch receiverddata details ${response.statusCode}');
+        print('Failed to fetch receiver data details ${response.statusCode}');
         isLoading = false; // Set isLoading to false in case of an error
       }
     } catch (e) {
@@ -60,6 +63,7 @@ class _TrackScreenState extends State<TrackScreen> {
       isLoading = false; // Set isLoading to false in case of an error
     }
   }
+
 
   Future<void> _dialNumber(String phoneNumber) async {
     final Uri launchUri = Uri(
