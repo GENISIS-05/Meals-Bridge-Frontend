@@ -79,7 +79,7 @@ class _TrackScreenState extends State<TrackScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Track Screen', style: TextStyle(color: Colors.white),),
-        backgroundColor: Colors.cyan,
+        backgroundColor: Color(0xFF04FC10),
       ),
       body: isLoading
           ? Center(
@@ -101,7 +101,7 @@ class _TrackScreenState extends State<TrackScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(color: Colors.cyan,),
+              CircularProgressIndicator(color: Color(0xFF04FC10)),
               SizedBox(height: 10),
               Text('Please wait...'),
             ],
@@ -124,7 +124,7 @@ class _TrackScreenState extends State<TrackScreen> {
             ),
             SizedBox(height: 20.0),
             Text(
-              "Your phlebotomist is on the way.",
+              "Your Distributor is on the way.",
               style: TextStyle(fontSize: 18.0),
             ),
             SizedBox(height: 20.0),
@@ -133,7 +133,7 @@ class _TrackScreenState extends State<TrackScreen> {
                 _dialNumber(receiverPhone);
               },
               icon: Icon(Icons.phone, color: Colors.white),
-              label: Text('Call your phlebo', style: TextStyle(color: Colors.white)),
+              label: Text('Call your Ditributor', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),

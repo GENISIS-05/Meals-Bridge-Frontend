@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meals_bridge_frontend/check_session.dart';
+import 'package:meals_bridge_frontend/donner/home_screen_donner.dart';
+import 'package:meals_bridge_frontend/donner/map_test.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +37,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
       // home: HomeScreenDistributor(),
-      home: UserSession(),
+      // home: UserSession(),
+      home: HomeScreenDonner(),
     );
   }
 }

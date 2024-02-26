@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:meals_bridge_frontend/donner/donate_screen.dart';
+import 'package:meals_bridge_frontend/donner/map_test.dart';
 
 import 'bottom_nav_bar.dart';
 import 'drawer_content.dart';
@@ -45,70 +42,71 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
       // drawer: DrawerContent(),
       body: Stack(
         children: [
-          CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: MediaQuery.of(context).size.height,
-                backgroundColor: Colors.black,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Stack(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/homebg.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomRight,
-                            colors: [
-                              Colors.black,
-                              Colors.black.withOpacity(.2),
-                            ],
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width,
-                            bottom: MediaQuery.of(context).size.height,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 120,
-                          left: 20,
-                          child: DefaultTextStyle(
-                            style: const TextStyle(
-                              fontSize: 30.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width - 40, // Adjust the width as needed
-                              child: AnimatedTextKit(
-                                animatedTexts: [
-                                  TypewriterAnimatedText('Help combat food wastage and hunger'),
-                                  TypewriterAnimatedText('Be mindful of your food consumption'),
-                                  TypewriterAnimatedText('Support initiatives to redistribute surplus food'),
-                                  TypewriterAnimatedText('Together, we can make a difference'),
-                                ],
-                                onTap: () {
-                                  print("Tap Event");
-                                },
-                              ),
-                            ),
-                          ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // CustomScrollView(
+          //   slivers: [
+          //     SliverAppBar(
+          //       expandedHeight: MediaQuery.of(context).size.height,
+          //       backgroundColor: Colors.black,
+          //       flexibleSpace: FlexibleSpaceBar(
+          //         background: Stack(
+          //           children: [
+          //             Container(
+          //               decoration: BoxDecoration(
+          //                 image: DecorationImage(
+          //                   image: AssetImage('assets/homebg.png'),
+          //                   fit: BoxFit.cover,
+          //                 ),
+          //               ),
+          //             ),
+          //             Container(
+          //               decoration: BoxDecoration(
+          //                 gradient: LinearGradient(
+          //                   begin: Alignment.bottomRight,
+          //                   colors: [
+          //                     Colors.black,
+          //                     Colors.black.withOpacity(.2),
+          //                   ],
+          //                 ),
+          //               ),
+          //               child: Padding(
+          //                 padding: EdgeInsets.only(
+          //                   left: MediaQuery.of(context).size.width,
+          //                   bottom: MediaQuery.of(context).size.height,
+          //                 ),
+          //               ),
+          //             ),
+          //             Positioned(
+          //               top: 120,
+          //                 left: 20,
+          //                 child: DefaultTextStyle(
+          //                   style: const TextStyle(
+          //                     fontSize: 30.0,
+          //                     color: Colors.black,
+          //                     fontWeight: FontWeight.bold,
+          //                   ),
+          //                   child: Container(
+          //                     width: MediaQuery.of(context).size.width - 40, // Adjust the width as needed
+          //                     child: AnimatedTextKit(
+          //                       animatedTexts: [
+          //                         TypewriterAnimatedText('Help combat food wastage and hunger'),
+          //                         TypewriterAnimatedText('Be mindful of your food consumption'),
+          //                         TypewriterAnimatedText('Support initiatives to redistribute surplus food'),
+          //                         TypewriterAnimatedText('Together, we can make a difference'),
+          //                       ],
+          //                       onTap: () {
+          //                         print("Tap Event");
+          //                       },
+          //                     ),
+          //                   ),
+          //                 ),
+          //             )
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          MapTest(),
           Positioned(
             top: MediaQuery.of(context).size.height * 0.05,
             left: 20,
