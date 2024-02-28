@@ -4,7 +4,6 @@ import 'package:meals_bridge_frontend/donner/track_screen.dart';
 
 import '../Services/shared_preference.dart';
 import '../config.dart';
-import 'bottom_nav_bar.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -144,12 +143,6 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
         ),
             ),
           // Add the BottomNavigationBarWidget
-          Positioned(
-            bottom: 30, // Adjust this value to set the height from the bottom
-            left: 30,
-            right: 30,
-            child: BottomNavigationBarWidget(),
-          ),
     ]
       ),
     );
