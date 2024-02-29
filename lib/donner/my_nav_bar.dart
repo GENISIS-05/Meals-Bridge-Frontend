@@ -6,13 +6,17 @@ import 'donate_screen.dart';
 import 'home_screen_donner.dart';
 
 class MyNavBar extends StatefulWidget {
+  final int initialPageIndex;
+
+  MyNavBar({required this.initialPageIndex});
+
   @override
   _MyNavBarState createState() => _MyNavBarState();
 }
 
 class _MyNavBarState extends State<MyNavBar> {
-  final PageController _pageController = PageController();
-  int _currentIndex = 0;
+  late final PageController _pageController;
+  late int _currentIndex;
 
   List<NavItemStyle> navItemStyles = [
     NavItemStyle(CupertinoIcons.home, 'Home', 0, Colors.green, 30),
@@ -23,6 +27,8 @@ class _MyNavBarState extends State<MyNavBar> {
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(initialPage: widget.initialPageIndex);
+    _currentIndex = widget.initialPageIndex;
     resetNavStyles(); // Initialize the styles
     updateCurrentPageStyle(_currentIndex); // Update style for the initial page
   }

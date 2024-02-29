@@ -23,7 +23,7 @@ class _UserSessionState extends State<UserSession> {
   Future<void> checkUserLoggedIn() async {
     String? storedUid = await SharedPreferenceService.getUidFromLocalStorage();
     if (storedUid != null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyNavBar()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyNavBar(initialPageIndex: 0)));
     }else{
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserRegistration()));
     }

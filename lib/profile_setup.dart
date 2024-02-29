@@ -384,7 +384,7 @@ class _ProgileSetupState extends State<ProgileSetup> {
           content: Text('Your data saved successfully'),
           backgroundColor: Colors.green, // Set the background color to green
         );
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyNavBar()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyNavBar(initialPageIndex: 0,)));
         // You can handle the response accordingly
       } else {
         // Handle the error or non-200 status code

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals_bridge_frontend/donner/archive_screen.dart';
+import 'package:meals_bridge_frontend/donner/my_nav_bar.dart';
 
 class DonationConfirm extends StatefulWidget {
   final String donationId;
@@ -53,7 +54,7 @@ class _DonationConfirmState extends State<DonationConfirm> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ArchiveScreen(),
+                    builder: (context) => MyNavBar(initialPageIndex: 2),
                   ),
                 );
               },
