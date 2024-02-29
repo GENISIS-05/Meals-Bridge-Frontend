@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meals_bridge_frontend/donner/map_test.dart';
 
-import 'bottom_nav_bar.dart';
+
 import 'drawer_content.dart';
 
 class HomeScreenDonner extends StatefulWidget {
@@ -139,12 +139,6 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
                 ),
               ),
             ),
-          ),
-          Positioned(
-            bottom: 30,
-            left: 30,
-            right: 30,
-            child: BottomNavigationBarWidget(),
           ),
         ],
       ),

@@ -102,15 +102,15 @@ class _MapTestState extends State<MapTest> {
       body: Stack(
         children: [
           GoogleMap(
+            zoomControlsEnabled: false,
             initialCameraPosition: _kGooglePlex ?? CameraPosition(target: LatLng(0, 0), zoom: 1),
             markers: Set<Marker>.of(_markers),
             onMapCreated: (GoogleMapController controller){
               _controller.complete(controller);
             },
           ),
-          // Show CircularProgressIndicator only during initial loading
           if (_isLoading)
-            Center(
+            const Center(
               child: CircularProgressIndicator(),
             ),
         ],
