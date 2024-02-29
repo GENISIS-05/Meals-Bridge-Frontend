@@ -3,6 +3,8 @@ import 'package:meals_bridge_frontend/Services/shared_preference.dart';
 import 'package:meals_bridge_frontend/donner/home_screen_donner.dart';
 import 'package:meals_bridge_frontend/user_registration.dart';
 
+import 'donner/my_nav_bar.dart';
+
 class UserSession extends StatefulWidget {
   const UserSession({super.key});
 
@@ -21,7 +23,7 @@ class _UserSessionState extends State<UserSession> {
   Future<void> checkUserLoggedIn() async {
     String? storedUid = await SharedPreferenceService.getUidFromLocalStorage();
     if (storedUid != null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreenDonner()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyNavBar()));
     }else{
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UserRegistration()));
     }

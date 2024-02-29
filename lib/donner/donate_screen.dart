@@ -96,6 +96,8 @@ class _DonateScreenState extends State<DonateScreen> {
         List<String> foodNames = [];
         List<String> quantity = [];
         List<String> imagesBase64 = [];
+        List<String> assignUids = await SharedPreferenceService.getNearbyUidsFromLocalStorage();
+        print(assignUids);
 
         for (CardData cardData in cardsData) {
           foodNames.add(cardData.textField1Controller.text.trim());
@@ -116,13 +118,8 @@ class _DonateScreenState extends State<DonateScreen> {
           "image": imagesBase64,
           "quantity": quantity,
           "location": address,
+          "Assignuid": assignUids, // Include the Assignuid field
         };
-        //
-        // print(uid);
-        // print(imagesBase64);
-        // print(foodNames);
-        // print(quantity);
-        // print(address);
 
         // Make the API request
         var response = await http.post(
@@ -153,8 +150,7 @@ class _DonateScreenState extends State<DonateScreen> {
               builder: (context) => DonationConfirm(donationId: oid),
             ),
           );
-        }
-        else {
+        } else {
           // API call failed, show an error message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

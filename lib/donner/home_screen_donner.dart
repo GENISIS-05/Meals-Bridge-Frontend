@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:meals_bridge_frontend/donner/map_test.dart';
 
 
+import '../Services/shared_preference.dart';
 import 'drawer_content.dart';
 
 class HomeScreenDonner extends StatefulWidget {
@@ -35,6 +36,18 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
       });
     });
   }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
+  //     // Clear only UID data in SharedPreferences when the app is suspended or terminated
+  //     clearUidSharedPreferencesData();
+  //   }
+  // }
+  //
+  // Future<void> clearUidSharedPreferencesData() async {
+  //   await SharedPreferenceService.clearUidData(); // Add this method in your SharedPreferenceService
+  // }
 
   @override
   Widget build(BuildContext context) {
