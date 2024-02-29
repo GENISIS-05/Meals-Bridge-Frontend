@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:meals_bridge_frontend/Services/shared_preference.dart';
 
 import 'package:meals_bridge_frontend/donner/home_screen_donner.dart';
+import 'package:meals_bridge_frontend/donner/my_nav_bar.dart';
 import 'package:meals_bridge_frontend/user_registration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -379,7 +380,11 @@ class _ProgileSetupState extends State<ProgileSetup> {
       if (response.statusCode == 200) {
         // Successful API call
         print("API Response: ${response.body}");
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreenDonner()));
+        SnackBar(
+          content: Text('Your data saved successfully'),
+          backgroundColor: Colors.green, // Set the background color to green
+        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyNavBar()));
         // You can handle the response accordingly
       } else {
         // Handle the error or non-200 status code

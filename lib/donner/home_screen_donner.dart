@@ -120,23 +120,32 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
                   ),
                 );
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xFF04FC10),
-                  borderRadius: BorderRadius.circular(50),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 10,
-                      offset: Offset(0, 3),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0xFF04FC10).withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: CircleAvatar(
-                  radius: 25,
-                  backgroundImage: AssetImage('assets/profile.jpg'),
-                ),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundImage: AssetImage('assets/profile.jpg'),
+                    ),
+                  ),
+                  SizedBox(width: MediaQuery.of(context).size.width*0.1),
+                  Container(
+                    child: Text('Distributors Near You', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                  )
+                ],
               ),
             ),
           ),

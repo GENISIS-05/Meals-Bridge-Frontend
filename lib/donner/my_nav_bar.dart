@@ -53,6 +53,7 @@ class _MyNavBarState extends State<MyNavBar> {
                   updateCurrentPageStyle(_currentIndex); // Update style for the current page
                 });
               },
+              physics: NeverScrollableScrollPhysics(), // Disable swipe functionality
               children: [
                 HomeScreenDonner(),
                 DonateScreen(),
