@@ -21,117 +21,20 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Start a timer to update _animationValue over time
-    Timer.periodic(Duration(milliseconds: 50), (timer) {
-      setState(() {
-        _animationValue -= 0.01; // Adjust the decrement value based on your preference
-        if (_animationValue <= 0) {
-          timer.cancel(); // Stop the timer when the animation is complete
-        }
-      });
-    });
-  }
-
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
-  //     // Clear only UID data in SharedPreferences when the app is suspended or terminated
-  //     clearUidSharedPreferencesData();
-  //   }
-  // }
-  //
-  // Future<void> clearUidSharedPreferencesData() async {
-  //   await SharedPreferenceService.clearUidData(); // Add this method in your SharedPreferenceService
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // drawer: DrawerContent(),
+      key: _scaffoldKey,
+      drawer: DrawerContent(),
       body: Stack(
         children: [
-          // CustomScrollView(
-          //   slivers: [
-          //     SliverAppBar(
-          //       expandedHeight: MediaQuery.of(context).size.height,
-          //       backgroundColor: Colors.black,
-          //       flexibleSpace: FlexibleSpaceBar(
-          //         background: Stack(
-          //           children: [
-          //             Container(
-          //               decoration: BoxDecoration(
-          //                 image: DecorationImage(
-          //                   image: AssetImage('assets/homebg.png'),
-          //                   fit: BoxFit.cover,
-          //                 ),
-          //               ),
-          //             ),
-          //             Container(
-          //               decoration: BoxDecoration(
-          //                 gradient: LinearGradient(
-          //                   begin: Alignment.bottomRight,
-          //                   colors: [
-          //                     Colors.black,
-          //                     Colors.black.withOpacity(.2),
-          //                   ],
-          //                 ),
-          //               ),
-          //               child: Padding(
-          //                 padding: EdgeInsets.only(
-          //                   left: MediaQuery.of(context).size.width,
-          //                   bottom: MediaQuery.of(context).size.height,
-          //                 ),
-          //               ),
-          //             ),
-          //             Positioned(
-          //               top: 120,
-          //                 left: 20,
-          //                 child: DefaultTextStyle(
-          //                   style: const TextStyle(
-          //                     fontSize: 30.0,
-          //                     color: Colors.black,
-          //                     fontWeight: FontWeight.bold,
-          //                   ),
-          //                   child: Container(
-          //                     width: MediaQuery.of(context).size.width - 40, // Adjust the width as needed
-          //                     child: AnimatedTextKit(
-          //                       animatedTexts: [
-          //                         TypewriterAnimatedText('Help combat food wastage and hunger'),
-          //                         TypewriterAnimatedText('Be mindful of your food consumption'),
-          //                         TypewriterAnimatedText('Support initiatives to redistribute surplus food'),
-          //                         TypewriterAnimatedText('Together, we can make a difference'),
-          //                       ],
-          //                       onTap: () {
-          //                         print("Tap Event");
-          //                       },
-          //                     ),
-          //                   ),
-          //                 ),
-          //             )
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
           MapTest(),
           Positioned(
             top: MediaQuery.of(context).size.height * 0.05,
             left: 20,
             child: GestureDetector(
               onTap: () {
-                // Show a snackbar when the user clicks on the container
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('The feature is under development'),
-                    backgroundColor: Colors.green, // Set the background color to green
-                  ),
-                );
+                _scaffoldKey.currentState?.openDrawer();
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -154,10 +57,13 @@ class _HomeScreenDonnerState extends State<HomeScreenDonner> {
                       backgroundImage: AssetImage('assets/profile.jpg'),
                     ),
                   ),
-                  SizedBox(width: MediaQuery.of(context).size.width*0.1),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.1),
                   Container(
-                    child: Text('Distributors Near You', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                  )
+                    child: Text(
+                      'Distributors Near You',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
                 ],
               ),
             ),
