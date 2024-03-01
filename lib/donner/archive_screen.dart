@@ -72,60 +72,65 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
       // ),
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
-        child: Stack(
-          children: [isLoading
-              ? Center(
-            child: Container(
-              width: 200,
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 3,
-                    blurRadius: 10,
-                    offset: Offset(0, 3),
-                  ),
-                ],
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Stack(
+            children: [isLoading
+                ? Center(
+              child: Container(
+                width: 200,
+                height: 150,
+                decoration: BoxDecoration(
+                  // color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //     color: Colors.black.withOpacity(0.1),
+                  //     spreadRadius: 3,
+                  //     blurRadius: 10,
+                  //     offset: Offset(0, 3),
+                  //   ),
+                  // ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(color: Color(0xFF04FC10)),
+                    SizedBox(height: 10),
+                    Text('Please wait...'),
+                  ],
+                ),
               ),
+            )
+                : totalOrders == 0
+                ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(color: Color(0xFF04FC10)),
-                  SizedBox(height: 10),
-                  Text('Please wait...'),
-                ],
-              ),
-            ),
-          )
-              : totalOrders == 0
-              ? Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.calendar_month,
-                  size: 50.0,
-                  color: Colors.cyan,
-                ),
-                SizedBox(height: 20.0),
-                Text(
-                  'No bookings yet',
-                  style: TextStyle(
-                    fontSize: 18.0,
+                  Icon(
+                    Icons.calendar_month,
+                    size: 50.0,
                     color: Colors.cyan,
                   ),
-                ),
-              ],
-            ),
-          )
-              : Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: ListView(
-            physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.all(15.0),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'No bookings yet',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.cyan,
+                    ),
+                  ),
+                ],
+              ),
+            )
+                : Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Column(
+                children: [
+                  ListView(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.all(15.0),
                     children: List.generate(
                       orders.length,
                           (index) {
@@ -139,12 +144,15 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                           reciveruid: order.reciveruid,
                           isCompleted: order.isCompleted,
                         );
-                      },
+                          },
                     ).reversed.toList(),
-          ),
+                  ),
+                ],
               ),
-            // Add the BottomNavigationBarWidget
+            ),
+              // Add the BottomNavigationBarWidget
     ]
+          ),
         ),
       ),
     );
@@ -238,7 +246,7 @@ class _CardWidgetState extends State<CardWidget> {
             // Use a conditional statement to check isComplete status
             widget.isCompleted
                 ? Text(
-              'Your order has been distributed',
+              'Your donation has been distributed',
               style: TextStyle(
                 color: Colors.green,
                 fontWeight: FontWeight.bold,
