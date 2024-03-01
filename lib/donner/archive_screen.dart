@@ -16,7 +16,6 @@ class ArchiveScreen extends StatefulWidget {
 }
 
 class _ArchiveScreenState extends State<ArchiveScreen> {
-
   int totalOrders = 1;
   bool isLoading = false;
   List<Order> orders = [];
@@ -24,39 +23,39 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
   @override
   void initState() {
     super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
     setState(() {
       isLoading = true;
     });
-    fetchData().then((data) {
-      setState(() {
-        orders = data;
-      });
-    });
-  }
-
-  Future<List<Order>> fetchData() async {
     try {
       String? uid = await SharedPreferenceService.getUidFromLocalStorage();
       if (uid != null) {
         var response = await http.get(Uri.parse('${Config.allOrdersUrl}/$uid'));
         if (response.statusCode == 200) {
           List<dynamic> data = json.decode(response.body);
-          List<Order> orders = data.map((item) => Order.fromJson(item)).toList();
+          List<Order> updatedOrders = data.map((item) => Order.fromJson(item)).toList();
           setState(() {
             isLoading = false;
+            orders = updatedOrders;
           });
-          return orders;
         } else {
           throw Exception('Failed to load data');
         }
       }
     } catch (e) {
       print('Error fetching data: $e');
+      setState(() {
+        isLoading = false;
+      });
       throw Exception('Failed to load data');
     }
+  }
 
-    // Add a return statement here to satisfy the return type.
-    return [];
+  Future<void> _handleRefresh() async {
+    await _fetchData();
   }
 
 
@@ -71,78 +70,82 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
       //   // centerTitle: true,
       //   backgroundColor: Colors.cyan,
       // ),
-      body: Stack(
-        children: [isLoading
-            ? Center(
-          child: Container(
-            width: 200,
-            height: 150,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 3,
-                  blurRadius: 10,
-                  offset: Offset(0, 3),
-                ),
-              ],
+      body: RefreshIndicator(
+        onRefresh: _handleRefresh,
+        child: Stack(
+          children: [isLoading
+              ? Center(
+            child: Container(
+              width: 200,
+              height: 150,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 3,
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(color: Color(0xFF04FC10)),
+                  SizedBox(height: 10),
+                  Text('Please wait...'),
+                ],
+              ),
             ),
+          )
+              : totalOrders == 0
+              ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularProgressIndicator(color: Color(0xFF04FC10)),
-                SizedBox(height: 10),
-                Text('Please wait...'),
-              ],
-            ),
-          ),
-        )
-            : totalOrders == 0
-            ? Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.calendar_month,
-                size: 50.0,
-                color: Colors.cyan,
-              ),
-              SizedBox(height: 20.0),
-              Text(
-                'No bookings yet',
-                style: TextStyle(
-                  fontSize: 18.0,
+                Icon(
+                  Icons.calendar_month,
+                  size: 50.0,
                   color: Colors.cyan,
                 ),
-              ),
-            ],
-          ),
-        )
-            : Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: ListView(
-          physics: BouncingScrollPhysics(),
-          padding: EdgeInsets.all(15.0),
-                  children: List.generate(
-                    orders.length,
-                        (index) {
-                      Order order = orders[index];
-                      return CardWidget(
-                        orderId: order.orderId,
-                        statusVariable: order.status ? 1 : 0,
-                        foodNames: order.foodNames,
-                        quantity: order.quantity,
-                        date: order.date,
-                        reciveruid: order.reciveruid,
-                      );
-                    },
-                  ).reversed.toList(),
-        ),
+                SizedBox(height: 20.0),
+                Text(
+                  'No bookings yet',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.cyan,
+                  ),
+                ),
+              ],
             ),
-          // Add the BottomNavigationBarWidget
+          )
+              : Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: ListView(
+            physics: BouncingScrollPhysics(),
+            padding: EdgeInsets.all(15.0),
+                    children: List.generate(
+                      orders.length,
+                          (index) {
+                        Order order = orders[index];
+                        return CardWidget(
+                          orderId: order.orderId,
+                          statusVariable: order.status ? 1 : 0,
+                          foodNames: order.foodNames,
+                          quantity: order.quantity,
+                          date: order.date,
+                          reciveruid: order.reciveruid,
+                          isCompleted: order.isCompleted,
+                        );
+                      },
+                    ).reversed.toList(),
+          ),
+              ),
+            // Add the BottomNavigationBarWidget
     ]
+        ),
       ),
     );
   }
@@ -155,6 +158,7 @@ class CardWidget extends StatefulWidget {
   final List<String> quantity;
   final String date;
   final String? reciveruid;
+  final bool isCompleted;
 
   CardWidget({
     required this.orderId,
@@ -162,7 +166,8 @@ class CardWidget extends StatefulWidget {
     required this.foodNames,
     required this.quantity,
     required this.date,
-    required this.reciveruid
+    required this.reciveruid,
+    required this.isCompleted
   });
   @override
   _CardWidgetState createState() => _CardWidgetState();
@@ -171,7 +176,6 @@ class CardWidget extends StatefulWidget {
 class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
-    // Create a date formatter with the desired format
     final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
     return Card(
@@ -205,9 +209,7 @@ class _CardWidgetState extends State<CardWidget> {
                     },
                     onSelected: (String value) {
                       if (value == 'track') {
-                        // Check if reciveruid is not null
                         if (widget.reciveruid != null && widget.reciveruid != '') {
-                          // Navigate to TrackScreen and pass the reciveruid
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -215,7 +217,6 @@ class _CardWidgetState extends State<CardWidget> {
                             ),
                           );
                         } else {
-                          // Show toast message if reciveruid is null or empty
                           Fluttertoast.showToast(
                             msg: "Distributor is finding you",
                             toastLength: Toast.LENGTH_SHORT,
@@ -234,10 +235,20 @@ class _CardWidgetState extends State<CardWidget> {
               color: Colors.black12,
             ),
             SizedBox(height: 10.0),
-            Text(
+            // Use a conditional statement to check isComplete status
+            widget.isCompleted
+                ? Text(
+              'Your order has been distributed',
+              style: TextStyle(
+                color: Colors.green,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            )
+                : Text(
               widget.statusVariable == 0 ? "Let Distributor accept" : "Distributor Found",
               style: TextStyle(
-                color: widget.statusVariable == 0 ? Colors.red : Colors.green,
+                color: widget.statusVariable == 0 ? Colors.red : Colors.blue[600],
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -256,7 +267,6 @@ class _CardWidgetState extends State<CardWidget> {
               ),
             ),
             SizedBox(height: 10.0),
-            // Format the date using dateFormat
             Text('Date: ${dateFormat.format(DateTime.parse(widget.date))}'),
           ],
         ),
@@ -272,6 +282,7 @@ class Order {
   final List<String> quantity;
   final String date;
   final String? reciveruid; // Make reciveruid nullable
+  final bool isCompleted;
 
   Order({
     required this.orderId,
@@ -280,6 +291,7 @@ class Order {
     required this.quantity,
     required this.date,
     this.reciveruid, // Make reciveruid nullable
+    required this.isCompleted
   });
 
   factory Order.fromJson(Map<String, dynamic> json) {
@@ -290,6 +302,7 @@ class Order {
       quantity: List<String>.from(json['quantity']),
       date: json['date'],
       reciveruid: json['reciveruid'],
+      isCompleted: json['isCompleted']
     );
   }
 }

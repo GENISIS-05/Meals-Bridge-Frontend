@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,6 +27,7 @@ class _DonateScreenState extends State<DonateScreen> {
   String? address;
   List<String> locationData = [];
   String oid = '';
+  bool isDonating = false; // Added
 
   @override
   void initState() {
@@ -91,6 +93,9 @@ class _DonateScreenState extends State<DonateScreen> {
   Future<void> donateItems() async {
     try {
       String? uid = await SharedPreferenceService.getUidFromLocalStorage();
+      setState(() {
+        isDonating = true;
+      });
 
       if (uid != null) {
         List<String> foodNames = [];
@@ -103,10 +108,10 @@ class _DonateScreenState extends State<DonateScreen> {
           foodNames.add(cardData.textField1Controller.text.trim());
           quantity.add(cardData.textField2Controller.text.trim());
 
-          // Convert image to base64
+          // Compress and convert image to base64
           if (cardData.image != null) {
-            List<int> imageBytes = await cardData.image!.readAsBytes();
-            String base64Image = base64Encode(imageBytes);
+            List<int> compressedImageBytes = await compressImage(cardData.image!);
+            String base64Image = base64Encode(compressedImageBytes);
             imagesBase64.add(base64Image);
           }
         }
@@ -120,7 +125,6 @@ class _DonateScreenState extends State<DonateScreen> {
           "location": address,
           "Assignuid": assignUids, // Include the Assignuid field
         };
-
         // Make the API request
         var response = await http.post(
           Uri.parse(Config.donateUrl),
@@ -138,10 +142,9 @@ class _DonateScreenState extends State<DonateScreen> {
 
           // Print the oid in the console
           print("OID: $oid");
-
-          // Clear the cardsData list after successful donation
           setState(() {
             cardsData.clear();
+            isDonating = false;
           });
 
           await Navigator.push(
@@ -152,6 +155,9 @@ class _DonateScreenState extends State<DonateScreen> {
           );
         } else {
           // API call failed, show an error message
+          setState(() {
+            isDonating = false;
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Failed to donate items. Please try again.'),
@@ -163,7 +169,27 @@ class _DonateScreenState extends State<DonateScreen> {
     } catch (e) {
       print('Error donating items: $e');
       // Handle the error as needed
+      setState(() {
+        isDonating = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Server Error'),
+        ),
+      );
+
     }
+  }
+
+  Future<List<int>> compressImage(File imageFile) async {
+    var result = await FlutterImageCompress.compressWithFile(
+      imageFile.path,
+      minWidth: 640,
+      minHeight: 480,
+      quality: 85,
+    );
+
+    return result!;
   }
 
   @override

@@ -51,6 +51,7 @@ dependencies:
   intl:
   url_launcher:
   animated_text_kit:
+  flutter_image_compress:
 
 
   # The following adds the Cupertino Icons font to your application.
