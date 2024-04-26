@@ -1,5 +1,5 @@
 class Config {
-  static const String baseUrl = 'http://172.23.1.147:3000/';
+  static const String baseUrl = 'http://192.168.97.62:3000/';
   static const String sendOtpEndpoint = 'api/otp/sendotp';
   static const String verifyOtpEndpoint = 'api/otp/verifyotp';
   static const String saveUserDataEndpoint = 'api/profile/addProfile';
