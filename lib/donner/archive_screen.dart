@@ -62,14 +62,6 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(
-      //     'Your Booking',
-      //     // style: TextStyle(color: Colors.white),
-      //   ),
-      //   // centerTitle: true,
-      //   backgroundColor: Colors.cyan,
-      // ),
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
         child: SingleChildScrollView(
@@ -83,14 +75,6 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                 decoration: BoxDecoration(
                   // color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
-                  // boxShadow: [
-                  //   BoxShadow(
-                  //     color: Colors.black.withOpacity(0.1),
-                  //     spreadRadius: 3,
-                  //     blurRadius: 10,
-                  //     offset: Offset(0, 3),
-                  //   ),
-                  // ],
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
